@@ -1,21 +1,19 @@
 #include<iostream>
 #include<fstream>
+#include "../_string.cpp"
 using namespace std;
 
 struct pixel {
     int r, g, b;
 };
 
-pixel** parse(const char* filename) {
-    if(!filename){
-        cerr << "Error: Could not open file " << filename << endl;
-    }
-    ifstream infile(filename);
+pixel** parseNoRawPPM(_string filename) {
+    ifstream infile(filename.c_str());
     if (!infile) {
         cerr << "Error: Could not open file " << filename << endl;
         return nullptr;
     }
-    char magic[2];
+    _string magic;
     infile >> magic;
     if (magic != "P3") {
         std::cerr << "Error: Not a valid PPM ASCII file." << std::endl;
@@ -37,7 +35,7 @@ pixel** parse(const char* filename) {
 
 
 void test1(){
-    pixel** a = parse("test.ppm");
+    pixel** a = parseNoRawPPM("test.ppm");
 
     for (int x = 0; x < 2; x++) { 
         for (int y = 0; y < 2; y++) { 
