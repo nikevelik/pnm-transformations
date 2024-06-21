@@ -7,7 +7,7 @@ struct pixel {
     int r, g, b;
 };
 
-pixel** parseNoRawPPM(_string filename) {
+pixel** parsePlainPPM(_string filename) {
     ifstream infile(filename.c_str());
     if (!infile) {
         cerr << "Error: Could not open file " << filename << endl;
@@ -21,10 +21,10 @@ pixel** parseNoRawPPM(_string filename) {
     int width, height, maxColor;
     infile >> width >> height;
     infile >> maxColor;
-    pixel** res = new pixel*[2];
+    pixel** res = new pixel*[width];
     
-    for (int x = 0; x < 2; x++) { 
-        res[x] = new pixel[2];   
+    for (int x = 0; x < width; x++) { 
+        res[x] = new pixel[height];   
         for (int y = 0; y < 2; y++) {             
             infile >> res[x][y].r >> res[x][y].g >> res[x][y].b;
         }
@@ -33,18 +33,50 @@ pixel** parseNoRawPPM(_string filename) {
     return res;
 }
 
+pixel** parseRawPPM(_string filename) {
+    ifstream infile(filename.c_str(), ios::binary);
+    if (!infile) {
+        cerr << "Error: Could not open file " << filename << endl;
+        return nullptr;
+    }
+    _string magic;
+    infile >> magic;
+    if (magic != "P6") {
+        cerr << "Error: Not a valid PPM binary file." << endl;
+        return nullptr;
+    }
+    int width, height, maxColor;
+    infile >> width >> height;
+    infile >> maxColor;
+        
+    char newline;
+    infile.get(newline);
+    
+    pixel** res = new pixel*[width];
+    
+    for (int x = 0; x < width; ++x) {
+        res[x] = new pixel[height];
+        for (int y = 0; y < height; ++y) {
+            infile.read(reinterpret_cast<char*>(&res[x][y].r), 1);
+            infile.read(reinterpret_cast<char*>(&res[x][y].g), 1);
+            infile.read(reinterpret_cast<char*>(&res[x][y].b), 1);
+        }
+    }
+    
+    infile.close();
+    return res;
+}
+
 
 void test1(){
-    pixel** a = parseNoRawPPM("test.ppm");
+    pixel** a = parseRawPPM("a.ppm");
 
-    for (int x = 0; x < 2; x++) { 
-        for (int y = 0; y < 2; y++) { 
-            cout << a[x][y].r << " ";
-            cout << a[x][y].g << " ";
-            cout << a[x][y].b << " ";
-            cout << endl; 
+    for (int x = 0; x < 640; x++) { 
+        for (int y = 0; y < 427; y++) { 
+            cout << a[x][y].r << ", ";
+            cout << a[x][y].g << ", ";
+            cout << a[x][y].b << "\n";
         }
-        cout << endl; 
     }
 
     
@@ -55,23 +87,8 @@ void test1(){
 }
 
 int main() {
+
     test1();
-
-    // std::ifstream infile("test.ppm"); 
-
-    // if (!infile) {
-    //     std::cerr << "Failed to open the file." << std::endl;
-    //     return 1;
-    // }
-
-    // std::string line;
-    // while (std::getline(infile, line)) {
-    //     std::cout << line << std::endl;
-    // }
-
-    // infile.close();
-
-
+    
     return 0;
 }
-
