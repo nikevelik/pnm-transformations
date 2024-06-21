@@ -1,14 +1,14 @@
 class Application{
 public:
     void help() const;
-    void load(MyString s);
+    void load(_string s);
     void change(int id);
     void close();
     void sessioninfo() const ;
     void undo();
     void save();
-    void saveAs(MyString s);
-    void collage(MyString s1, MyString s2, bool isVertical);
+    void saveAs(_string s);
+    void collage(_string s1, _string s2, bool isVertical);
     void transformation(/**???*/); //! MOD HERE
 private: 
     Vector<Session> sess;
@@ -19,7 +19,7 @@ void Application::help() const {
     std::cout << "help information displayed"; //! MOD HERE
 }
 
-void Application::load(MyString s){
+void Application::load(_string s){
     sess.push(s);
 }
 
@@ -54,10 +54,10 @@ void Application::undo(){
 void Application::save(){
     sess[curr].save();
 }
-void Application::saveAs(MyString s){
+void Application::saveAs(_string s){
     sess[curr].saveAs(s);
 }
-void Application::collage(MyString s1, MyString s2, bool isVertical){
+void Application::collage(_string s1, _string s2, bool isVertical){
     sess[curr].collage(s1, s2, isVertical);
 }
 void Application::transformation(/**???*/){//! MOD HERE
