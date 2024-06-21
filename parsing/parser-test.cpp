@@ -2,6 +2,7 @@
 #include<fstream>
 #include <stdexcept>
 #include "../_string.cpp"
+#include "../_bitset.cpp"
 using namespace std;
 
 struct pixel {
