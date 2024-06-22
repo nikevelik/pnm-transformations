@@ -2,7 +2,8 @@
 #include<fstream>
 #include <stdexcept>
 #include "../_string.cpp"
-#include "../_bitset.cpp"
+#include "../_bitset.hpp"
+#include <bitset>
 using namespace std;
 
 struct pixel {
@@ -142,6 +143,99 @@ shade** parseRawPGM(_string filename) {
     return res;
 }
 
+_bitset* parsePlainPBM(_string filename, int &width, int &height) {
+    ifstream infile(filename.c_str());
+    if (!infile) {
+        throw std::runtime_error("Error: Could not open file ");
+    }
+    
+    _string magic;
+    infile >> magic;
+    if (magic != "P1") {
+        throw std::runtime_error("Error: Not a valid PBM ASCII file.");
+    }
+    
+    infile >> width >> height;
+    // cout << width << " " << height;
+    //validate!
+
+    int rowSize = (width + 7) / 8;
+
+    _bitset* res = new _bitset(rowSize*height);
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < rowSize; ++x) {
+            for(int i = 7; i>=0; i--){
+                bool pixel;
+                infile >> pixel;
+                if(pixel){
+                    res->set((y * rowSize + x)*8 + i);
+                }
+            }
+        }
+    }
+    
+    infile.close();
+    return res;
+}
+
+char* parseRawPBM(_string filename, int &width, int &height) {
+    ifstream infile(filename.c_str(), ios::binary);
+    if (!infile) {
+        cerr << "Error: Could not open file " << filename << endl;
+        return nullptr;
+    }
+    
+    _string magic;
+    infile >> magic;
+    if (magic != "P4") {
+        cerr << "Error: Not a valid PBM binary file." << endl;
+        return nullptr;
+    }
+    
+    infile >> width >> height;
+    // validate!!!!
+
+    char newline;
+    infile.get(newline);
+    
+    int k = (width + 7) / 8;
+    char* res = new char[height * k];
+    
+    infile.read(res, height * k);
+    
+    infile.close();
+    return res;
+}
+
+
+_bitset* parseRawPBM2(_string filename, int &width, int &height) {
+    ifstream infile(filename.c_str(), ios::binary);
+    if (!infile) {
+        cerr << "Error: Could not open file " << filename << endl;
+        return nullptr;
+    }
+    
+    _string magic;
+    infile >> magic;
+    if (magic != "P4") {
+        cerr << "Error: Not a valid PBM binary file." << endl;
+        return nullptr;
+    }
+    
+    infile >> width >> height;
+    // validate!!!!
+
+    char newline;
+    infile.get(newline);
+    
+    int k = (width + 7) / 8;
+    _bitset* res = new _bitset(height * k);
+    
+    infile.read(res->ptr(), height * k);
+    
+    infile.close();
+    return res;
+}
 
 
 void test1(){
@@ -178,9 +272,23 @@ void test2(){
     delete[] a;
 }
 
-int main() {
+void test3(){
+    int width, height;
+    _bitset* a = parsePlainPBM("test.pbm", width, height);
+    cout << "P1" << "\n" << width << " " << height << endl;
+    int rowSize = (width + 7) / 8;
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < rowSize; ++x) {
+            for(int i = 7; i>=0; i--){
+                cout << a->read((y * rowSize + x)*8 + i) << "";
+            }
+        }
+        cout << "\n";
+    }
+}
 
-    test2();
+
+int main() {
     
     return 0;
 }
