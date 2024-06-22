@@ -1,10 +1,11 @@
 #pragma once
-#include "../../assets/_string.cpp"
+#include "../assets/_string.h"
 #include <fstream>
-class PNM{
+#include <stdexcept>
+class AbstractMap{
     public:
-        PNM() = default;
-        PNM(bool isRaw);
+        AbstractMap() = default;
+        AbstractMap(bool isRaw);
         virtual void serialize(const _string& filename) const;
         virtual void serializeraw(const _string& filename) const = 0;
         virtual void serializeplain(const _string& filename) const = 0;
@@ -15,11 +16,9 @@ class PNM{
         virtual void rotation90() = 0;
         virtual void rotation180() = 0;
         virtual void rotation270() = 0;
-        // virtual PNM* collagevertical() const = 0;
-        // virtual PNM* collagehorizontal() const = 0;
-        // virtual PNM* clone() const = 0;
-        static unsigned MAX_ALLOWED;
-        
+        // virtual AbstractMap* collagevertical() const = 0;
+        // virtual AbstractMap* collagehorizontal() const = 0;
+        // virtual AbstractMap* clone() const = 0;
     protected:
         virtual void deserializeplain(std::ifstream& infile) = 0;
         virtual void deserializeraw(std::ifstream& infile) = 0;
@@ -27,33 +26,31 @@ class PNM{
         bool raw = false;
 };
 
-unsigned PNM::MAX_ALLOWED = 255;
+AbstractMap::AbstractMap(bool isRaw):raw(isRaw){}
 
-PNM::PNM(bool isRaw):raw(isRaw){}
-
-void PNM::deserialize(const _string& filename){
+void AbstractMap::deserialize(const _string& filename){
     std::ifstream infile(filename.c_str(), std::ios::binary);
     if (!infile) {
         throw std::runtime_error("Error! Could not open file");   
     }
     deserializeheader(infile);
     switch(raw){
-        case 1:
+        case true:
             deserializeraw(infile);
             break;
-        case 0: 
+        case false: 
             deserializeplain(infile);
             break;
     }
     infile.close();
 }
 
-void PNM::serialize(const _string& filename) const {
+void AbstractMap::serialize(const _string& filename) const {
     switch(raw){
-        case 1:
+        case true:
             serializeraw(filename);
             break;
-        case 0: 
+        case false: 
             serializeplain(filename);
             break;
     }
