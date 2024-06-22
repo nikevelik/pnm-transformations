@@ -1,6 +1,6 @@
 #include <iostream>
 #include <exception>
-template <typename T>
+template <class T>
 // credit: Angeld55
 class _queue
 {
@@ -36,7 +36,7 @@ public:
 
 };
 
-template <typename T>
+template <class T>
 _queue<T>::_queue()
 {
 	capacity = 4;
@@ -45,7 +45,7 @@ _queue<T>::_queue()
 	get = put = 0;
 }
 
-template <typename T>
+template <class T>
 void _queue<T>::push(const T& obj)
 {
 	if (size == capacity)
@@ -56,7 +56,7 @@ void _queue<T>::push(const T& obj)
 	size++;
 }
 
-template <typename T>
+template <class T>
 void _queue<T>::push(T&& obj)
 {
 	if (size == capacity)
@@ -67,14 +67,14 @@ void _queue<T>::push(T&& obj)
 	size++;
 }
 
-template <typename T>
+template <class T>
 bool _queue<T>::isEmpty() const
 {
 	return size == 0;
 }
 
 
-template <typename T>
+template <class T>
 const T& _queue<T>::peek() const
 {
 	if (isEmpty())
@@ -83,7 +83,7 @@ const T& _queue<T>::peek() const
 	return data[get];
 }
 
-template <typename T>
+template <class T>
 void _queue<T>::pop()
 {
 	if (isEmpty())
@@ -92,7 +92,7 @@ void _queue<T>::pop()
 	size--;
 }
 
-template <typename T>
+template <class T>
 void _queue<T>::resize()
 {
 	T* resizedData = new T[capacity * 2];
@@ -109,7 +109,7 @@ void _queue<T>::resize()
 }
 
 
-template <typename T>
+template <class T>
 void _queue<T>::copyFrom(const _queue<T>& other)
 {
 	data = new T[other.capacity];
@@ -124,7 +124,7 @@ void _queue<T>::copyFrom(const _queue<T>& other)
 
 }
 
-template <typename T>
+template <class T>
 void _queue<T>::moveFrom(_queue<T>&& other)
 {
 	get = other.get;
@@ -139,20 +139,20 @@ void _queue<T>::moveFrom(_queue<T>&& other)
 	other.size = other.capacity = 0;
 }
 
-template <typename T>
+template <class T>
 void _queue<T>::free()
 {
 	delete[] data;
 }
 
-template <typename T>
+template <class T>
 _queue<T>::_queue(const _queue<T>& other)
 {
 	copyFrom(other);
 
 }
 
-template <typename T>
+template <class T>
 _queue<T>& _queue<T>::operator=(const _queue<T>& other)
 {
 	if (this != &other)
@@ -163,13 +163,13 @@ _queue<T>& _queue<T>::operator=(const _queue<T>& other)
 	return *this;
 }
 
-template <typename T>
+template <class T>
 _queue<T>::_queue(_queue<T>&& other)
 {
 	moveFrom(std::move(other));
 }
 
-template <typename T>
+template <class T>
 _queue<T>& _queue<T>::operator=(_queue<T>&& other)
 {
 	if (this != &other)
@@ -181,7 +181,7 @@ _queue<T>& _queue<T>::operator=(_queue<T>&& other)
 }
 
 
-template <typename T>
+template <class T>
 _queue<T>::~_queue()
 {
 	free();

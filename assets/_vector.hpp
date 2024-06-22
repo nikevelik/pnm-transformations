@@ -3,7 +3,7 @@
 #include <exception>
 // credit: oop course
 
-template<typename T>
+template<class T>
 class _vector {
 private:
 	static const short INITIAL_CAPACITY = 4;
@@ -53,25 +53,25 @@ private:
 };
 
 
-template<typename T>
+template<class T>
 _vector<T>::_vector() : _vector(INITIAL_CAPACITY) { }
 
 
-template<typename T>
+template<class T>
 _vector<T>::_vector(size_t capacity) : capacity(capacity) {
 	data = new T[capacity];
 }
 
-template<typename T>
+template<class T>
 _vector<T>::_vector(const _vector<T>& other) {
 	copyFrom(other);
 }
-template<typename T>
+template<class T>
 _vector<T>::_vector(_vector<T>&& other) {
 	move(std::move(other));
 }
 
-template<typename T>
+template<class T>
 _vector<T>& _vector<T>::operator=(const _vector<T>& other) {
 	if (this != &other) {
 		free();
@@ -81,7 +81,7 @@ _vector<T>& _vector<T>::operator=(const _vector<T>& other) {
 	return *this;
 }
 
-template<typename T>
+template<class T>
 _vector<T>& _vector<T>::operator=(_vector<T>&& other) {
 	if (this != &other) {
 		free();
@@ -91,33 +91,33 @@ _vector<T>& _vector<T>::operator=(_vector<T>&& other) {
 	return *this;
 }
 
-template<typename T>
+template<class T>
 _vector<T>::~_vector() {
 	free();
 }
 
-template<typename T>
+template<class T>
 void _vector<T>::assertIndex(size_t index) const {
 	if (index >= size) {
 		throw std::exception("Out of range");
 	}
 }
 
-template<typename T>
+template<class T>
 void _vector<T>::upsizeIfNeeded() {
 	if (size == capacity) {
 		resize(capacity * RESIZE_COEF);
 	}
 }
 
-template<typename T>
+template<class T>
 void _vector<T>::downsizeIfNeeded() {
 	if (size * RESIZE_COEF * RESIZE_COEF <= capacity) {
 		resize(capacity / RESIZE_COEF);
 	}
 }
 
-template<typename T>
+template<class T>
 void _vector<T>::resize(size_t newCapacity) {
 	capacity = newCapacity;
 	T* temp = new T[capacity];
@@ -135,29 +135,29 @@ void _vector<T>::resize(size_t newCapacity) {
 	data = temp;
 }
 
-template<typename T>
+template<class T>
 size_t _vector<T>::getSize() const {
 	return size;
 }
 
-template<typename T>
+template<class T>
 size_t _vector<T>::getCapacity() const {
 	return capacity;
 }
 
-template<typename T>
+template<class T>
 void _vector<T>::pushBack(const T& element) {
 	upsizeIfNeeded();
 	data[size++] = element;
 }
 
-template<typename T>
+template<class T>
 void _vector<T>::pushBack(T&& element) {
 	upsizeIfNeeded();
 	data[size++] = std::move(element);
 }
 
-template<typename T>
+template<class T>
 void _vector<T>::pushAt(const T& element, size_t index) {
 	assertIndex(index);
 	upsizeIfNeeded();
@@ -170,7 +170,7 @@ void _vector<T>::pushAt(const T& element, size_t index) {
 	size++;
 }
 
-template<typename T>
+template<class T>
 void _vector<T>::pushAt(T&& element, size_t index) {
 	assertIndex(index);
 	upsizeIfNeeded();
@@ -183,7 +183,7 @@ void _vector<T>::pushAt(T&& element, size_t index) {
 	size++;
 }
 
-template<typename T>
+template<class T>
 T _vector<T>::popBack() {
 	if (empty()) {
 		throw std::exception("_vector is empty");
@@ -194,7 +194,7 @@ T _vector<T>::popBack() {
 	return data[--size];
 }
 
-template<typename T>
+template<class T>
 T _vector<T>::popAt(size_t index) {
 	assertIndex(index);
 	
@@ -209,36 +209,36 @@ T _vector<T>::popAt(size_t index) {
 	return temp;
 }
 
-template<typename T>
+template<class T>
 bool _vector<T>::empty() const {
 	return size == 0;
 }
 
-template<typename T>
+template<class T>
 void _vector<T>::clear() {
 	size = 0;
 }
 
-template<typename T>
+template<class T>
 void _vector<T>::shrinkToFit() {
 	resize(size);
 }
 
-template<typename T>
+template<class T>
 T& _vector<T>::operator[](size_t index) {
 	assertIndex(index);
 
 	return data[index];
 }
 
-template<typename T>
+template<class T>
 const T& _vector<T>::operator[](size_t index) const {
 	assertIndex(index);
 
 	return data[index];
 }
 
-template<typename T>
+template<class T>
 void _vector<T>::move(_vector<T>&& other) {
 	size = other.size;
 	capacity = other.capacity;
@@ -248,7 +248,7 @@ void _vector<T>::move(_vector<T>&& other) {
 	other.capacity = 0;
 }
 
-template<typename T>
+template<class T>
 void _vector<T>::copyFrom(const _vector<T>& other) {
 	size = other.size;
 	capacity = other.capacity;
@@ -259,7 +259,7 @@ void _vector<T>::copyFrom(const _vector<T>& other) {
 	}
 }
 
-template<typename T>
+template<class T>
 void _vector<T>::free() {
 	delete[] data;
 	data = nullptr;
