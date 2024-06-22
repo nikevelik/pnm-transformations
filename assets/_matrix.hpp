@@ -1,5 +1,6 @@
 #pragma once
 #include <utility>
+#include <fstream>
 template <class T>
 class _matrix{
 public:
@@ -16,6 +17,11 @@ public:
     unsigned height() const;
     unsigned maxvalue() const;
     bool isCorrect() const;
+
+    void populateFromBinary(std::ifstream& infile);
+    void populateFromPlain(std::ifstream& infile);
+    void populateToBinary(std::ofstream& outfile) const;
+    void populateToPlain(std::ofstream& outfile) const;
 
     void transpose();
     void rotation90();
@@ -184,3 +190,44 @@ void _matrix<T>::rotation180(){
         }
     }
 }
+template <class T>
+void _matrix<T>::populateFromBinary(std::ifstream& infile){
+    for (unsigned y = 0; y < h; ++y) {
+        infile.read(reinterpret_cast<char*>(data[y]), sizeof(data[0][0]) * w); 
+        if(!infile.good()){
+            throw std::runtime_error("Binary map is damaged. Could not read from the file");
+        }
+    }
+    if(!isCorrect()){
+        throw std::runtime_error("Error due pixel outside the specified boundaries");
+    }
+}
+template <class T>
+void _matrix<T>::populateFromPlain(std::ifstream& infile){
+    for (unsigned y = 0; y < h; y++) { 
+        for (unsigned x = 0; x < w; x++) {  
+            infile >> data[y][x];
+            if(!data[y][x].isCorrect(mv)){
+                throw std::runtime_error("Error due value outside the specified boundaries");
+            }
+        }
+    }
+}
+
+
+template <class T>
+void _matrix<T>::populateToBinary(std::ofstream& outfile) const{
+    for (unsigned y = 0; y < h; ++y) {
+        outfile.write(reinterpret_cast<const char*>(data[y]), sizeof(data[0][0])*w);
+    }
+}
+
+template <class T>
+void _matrix<T>::populateToPlain(std::ofstream& outfile) const{
+    for (unsigned y = 0; y < h; y++) {
+        for (unsigned x = 0; x < w; x++) {
+            outfile << data[y][x];
+        }
+    }
+}
+

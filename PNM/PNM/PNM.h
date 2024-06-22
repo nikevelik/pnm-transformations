@@ -3,10 +3,12 @@
 #include <fstream>
 class PNM{
     public:
-        virtual void serialize(const _string& filename) const = 0;
+        PNM() = default;
+        PNM(bool isRaw);
+        virtual void serialize(const _string& filename) const;
         virtual void serializeraw(const _string& filename) const = 0;
         virtual void serializeplain(const _string& filename) const = 0;
-        virtual void deserialize(const _string& filename) = 0;
+        virtual void deserialize(const _string& filename);
         virtual void greyscale() = 0;
         virtual void monochrome() = 0;
         virtual void negative() = 0;
@@ -22,7 +24,37 @@ class PNM{
         virtual void deserializeplain(std::ifstream& infile) = 0;
         virtual void deserializeraw(std::ifstream& infile) = 0;
         virtual void deserializeheader(std::ifstream& infile) = 0;
-        bool raw;
+        bool raw = false;
 };
 
 unsigned PNM::MAX_ALLOWED = 255;
+
+PNM::PNM(bool isRaw):raw(isRaw){}
+
+void PNM::deserialize(const _string& filename){
+    std::ifstream infile(filename.c_str(), std::ios::binary);
+    if (!infile) {
+        throw std::runtime_error("Error! Could not open file");   
+    }
+    deserializeheader(infile);
+    switch(raw){
+        case 1:
+            deserializeraw(infile);
+            break;
+        case 0: 
+            deserializeplain(infile);
+            break;
+    }
+    infile.close();
+}
+
+void PNM::serialize(const _string& filename) const {
+    switch(raw){
+        case 1:
+            serializeraw(filename);
+            break;
+        case 0: 
+            serializeplain(filename);
+            break;
+    }
+}

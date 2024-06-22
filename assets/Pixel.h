@@ -43,7 +43,7 @@ static void check(std::ifstream& ifs, int v){
     }
 }
 
-std::ifstream& operator>>(std::ifstream& ifs, pixel& obj){
+std::ifstream& operator>>(std::ifstream& ifs, Pixel& obj){
     int v;
     ifs >> v;
     check(ifs, v);
@@ -61,7 +61,7 @@ std::ifstream& operator>>(std::ifstream& ifs, pixel& obj){
 }
 
 
-std::ofstream& operator<<(std::ofstream& ofs,const pixel& obj){
+std::ofstream& operator<<(std::ofstream& ofs,const Pixel& obj){
     int v;
     v = obj.r;
     ofs << v << " ";
