@@ -36,7 +36,7 @@ pixel** deserializePlainPPM(_string filename) {
     
     for (int x = 0; x < width; x++) { 
         res[x] = new pixel[height];   
-        for (int y = 0; y < 2; y++) {             
+        for (int y = 0; y < height; y++) {             
             infile >> res[x][y].r >> res[x][y].g >> res[x][y].b;
         }
     }
