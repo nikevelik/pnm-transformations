@@ -3,7 +3,6 @@
 #include <stdexcept>
 #include "../_string.cpp"
 #include "../_bitset.hpp"
-#include <bitset>
 using namespace std;
 
 struct pixel {
@@ -178,37 +177,7 @@ _bitset* parsePlainPBM(_string filename, int &width, int &height) {
     return res;
 }
 
-char* parseRawPBM(_string filename, int &width, int &height) {
-    ifstream infile(filename.c_str(), ios::binary);
-    if (!infile) {
-        cerr << "Error: Could not open file " << filename << endl;
-        return nullptr;
-    }
-    
-    _string magic;
-    infile >> magic;
-    if (magic != "P4") {
-        cerr << "Error: Not a valid PBM binary file." << endl;
-        return nullptr;
-    }
-    
-    infile >> width >> height;
-    // validate!!!!
-
-    char newline;
-    infile.get(newline);
-    
-    int k = (width + 7) / 8;
-    char* res = new char[height * k];
-    
-    infile.read(res, height * k);
-    
-    infile.close();
-    return res;
-}
-
-
-_bitset* parseRawPBM2(_string filename, int &width, int &height) {
+_bitset* parseRawPBM(_string filename, int &width, int &height) {
     ifstream infile(filename.c_str(), ios::binary);
     if (!infile) {
         cerr << "Error: Could not open file " << filename << endl;
