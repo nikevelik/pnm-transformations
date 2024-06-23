@@ -4,6 +4,8 @@
 #include "GraphicMatrix.hpp"
 #include <fstream>
 #include <stdexcept>
+#include "Shade.h"
+#include "Pixel.h"
 
 template<class T>
 class Map : public AbstractMap{
@@ -18,7 +20,7 @@ class Map : public AbstractMap{
         void rotation270() override;
         // AbstractMap* collagevertical() const override;
         // AbstractMap* collagehorizontal() const override;
-        // AbstractMap* clone() const override;
+        AbstractMap* clone() const override;
 
         Map(const _string& filename);
         Map(unsigned width, unsigned height, bool isRaw, unsigned maxvalue = T::MAX_ALLOWED);
@@ -91,5 +93,11 @@ void Map<T>::negative(){
     data.negative();
 }
 
+template <class T>
+AbstractMap* Map<T>::clone() const {
+    return new Map<T>(*this);
+}
+
+
 using Pixmap = Map<Pixel>;
-using GrayMap = Map<Shade>;
+using Graymap = Map<Shade>;

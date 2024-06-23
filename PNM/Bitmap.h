@@ -16,7 +16,7 @@ class Bitmap : public AbstractMap{
         void rotation270() override;
         // AbstractMap* collagevertical() const override;
         // AbstractMap* collagehorizontal() const override;
-        // AbstractMap* clone() const override;
+        AbstractMap* clone() const override;
 
         Bitmap(const _string& filename);
         Bitmap(unsigned width, unsigned height, bool isRaw);
@@ -131,6 +131,12 @@ void Bitmap::negative() {
 void Bitmap::rotation90() {}
 void Bitmap::rotation180() {}
 void Bitmap::rotation270() {}
+
+AbstractMap* Bitmap::clone() const {
+    return new Bitmap(*this);
+}
+
+
 
 // translation
 // row-wise reorder

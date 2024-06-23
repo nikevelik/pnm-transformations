@@ -18,7 +18,7 @@ class AbstractMap{
         virtual void rotation270() = 0;
         // virtual AbstractMap* collagevertical() const = 0;
         // virtual AbstractMap* collagehorizontal() const = 0;
-        // virtual AbstractMap* clone() const = 0;
+        virtual AbstractMap* clone() const = 0;
     protected:
         virtual void deserializeplain(std::ifstream& infile) = 0;
         virtual void deserializeraw(std::ifstream& infile) = 0;
