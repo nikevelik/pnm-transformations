@@ -9,7 +9,8 @@
 #include "../assets/fileformats.h"
 class Session{
     public:
-        Session();
+        Session() = default;
+        Session(const String& filename);
         void save() noexcept;
         void saveas(const String& filename) const noexcept;
         void info() const noexcept;
@@ -21,8 +22,6 @@ class Session{
     private:
         static void calc(const Operation& op, int& r, int& g, bool& n) noexcept;
         static void apply(AbstractMap* target, int r, int g, bool n) noexcept;
-        unsigned id = 0;
-        static unsigned lastId;
         Container<AbstractMap, PNMFactory> img;
         Vector<Pair<String, unsigned>> files;
         Vector<Operation> operations;

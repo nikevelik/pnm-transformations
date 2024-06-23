@@ -6,10 +6,6 @@ void Session::collage(const String& i1, const String& i2, bool isVertical, const
     std::cerr << "Collages are not available.";
 }
 
-unsigned Session::getID() const noexcept{
-    return id;
-}
-
 void Session::calc(const Operation& op, int& r, int& g, bool& n) noexcept{
     switch (op){
         case Operation::Grayscale:
@@ -57,13 +53,7 @@ void Session::apply(AbstractMap* target, int r, int g, bool n) noexcept{
     }
 }
 
-unsigned Session::lastId = 0;
-Session::Session(){
-    id = lastId++;
-}
-
 void Session::info() const noexcept{
-    std::cout << "sessionID: " << id << "\nadded images: ";
     for(unsigned i = 0; i < files.getSize(); i++){
         std::cout << files[i].getFirst() << " ";
     }
@@ -72,6 +62,15 @@ void Session::info() const noexcept{
         std::cout << operations[i] << " ";
     }
     std::cout << "\n";
+}
+
+Session::Session(const String& filename){
+    if(isValidFileType(filename)){
+        files.pushBack(Pair<String, unsigned>(filename, operations.getSize()));
+        std::cout << "Image \"" << filename <<"\" added\n";
+    }else{
+        throw std::runtime_error("file name is not valid\n");
+    }
 }
 
 void Session::add(const String& filename) noexcept{

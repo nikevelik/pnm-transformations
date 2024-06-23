@@ -29,5 +29,5 @@ class AbstractMap{
         String fn;
         int g = 0;
         bool raw = false; 
-        bool mod = false;
+        mutable bool mod = false;
 };

@@ -23,6 +23,7 @@ void AbstractMap::deserialize(const String& filename){
 }
 
 void AbstractMap::serialize(const String& filename) const {
+
     switch(raw){
         case true:
             serializeraw(filename);
@@ -36,8 +37,12 @@ void AbstractMap::serialize(const String& filename) const {
 
 void AbstractMap::serialize() const {
     if(mod){
+        std::cout << "MOD " << fn << "\n"; 
         serialize(fn);
+    }else{
+        std::cout << "No modification needed for " << fn << "\n"; 
     }
+    mod = false;
 }
 
 bool AbstractMap::isGray() const {

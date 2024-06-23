@@ -7,20 +7,17 @@ void Application::help() const {
 }
 
 void Application::load(const String& s){
-    sess.pushBack(Session());
-    curr = sess.getSize()-1;
-    std::cout << "Session with ID: " << sess[curr].getID() << " started\n";
-    sess[curr].add(s);
+    try{
+        sess.pushBack(Session(s));
+        curr = sess.getSize()-1;
+        std::cout << "Session with ID: " << curr << " started\n";
+    }catch(std::exception& e){
+        std::cerr << "Did not start session due: " << e.what();
+    }
 }
 
 void Application::change(int id){
-    for(int i = 0; i < sess.getSize(); i++){
-        if(sess[i].getID() == id){
-            std::cout << "changing session to " << id << "\n"; 
-            curr = i;
-            return;
-        }
-    }
+    std::cout << "changing session to " << (curr = id) << "\n"; 
 }
 
 void Application::add(const String& s){
@@ -38,6 +35,7 @@ void Application::close(){
 
 void Application::sessioninfo() const {
     if(curr!=-1){
+        std::cout << "sessionID: " << curr << "\nadded images: ";
         sess[curr].info();
     }else{
         std::cerr << "cannot display info of non-existend session\n";
@@ -173,6 +171,8 @@ bool Application::parse(const String& cmd) {
             operate(Operation::RotationL);
         } else if (direction == "right") {
             operate(Operation::RotationR);
+        }else {
+            std::cerr << "invalid command\n";
         }
         return 1;
     }
