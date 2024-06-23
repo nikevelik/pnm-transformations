@@ -8,7 +8,7 @@ class Bitmap : public AbstractMap{
     public:
         void serializeraw(const _string& filename) const override;
         void serializeplain(const _string& filename) const override;
-        void greyscale() override;
+        void grayscale() override;
         void monochrome() override;
         void negative() override;
         void rotation90() override;
@@ -19,7 +19,7 @@ class Bitmap : public AbstractMap{
         AbstractMap* clone() const override;
 
         Bitmap(const _string& filename);
-        Bitmap(unsigned width, unsigned height, bool isRaw);
+        Bitmap(unsigned width, unsigned height, const _string& filename, bool isRaw, int gray);
         
     private:
         void deserializeplain(std::ifstream& infile) override;
@@ -31,10 +31,14 @@ class Bitmap : public AbstractMap{
 };
 
 Bitmap::Bitmap(const _string& filename){
+    g = 2;
+    // copyf(filename, "~"+filename);
     deserialize(filename);
 }
 
-Bitmap::Bitmap(unsigned width, unsigned height, bool isRaw) : w(width), h(height), data((width + 7) / 8 * height), AbstractMap(isRaw){}
+Bitmap::Bitmap(unsigned width, unsigned height, const _string& filename, bool isRaw, int gray) : w(width), h(height), data((width + 7) / 8 * height), AbstractMap(filename, isRaw, gray){
+    mod = true;
+}
 
 void Bitmap::deserializeheader(std::ifstream& infile){
     _string magic;
@@ -114,13 +118,14 @@ void Bitmap::serializeplain(const _string& filename) const {
     outfile.close();
 }
 
-void Bitmap::greyscale() {
+void Bitmap::grayscale() {
     return;
 }
 void Bitmap::monochrome() {
     return;
 }
 void Bitmap::negative() {
+    mod = true;
     unsigned rs = (w+7)/8;
     for(unsigned y = 0; y < h; y++){
         for(unsigned x = 0; x < rs; x++){
@@ -128,19 +133,16 @@ void Bitmap::negative() {
         }
     }
 }
-void Bitmap::rotation90() {}
-void Bitmap::rotation180() {}
-void Bitmap::rotation270() {}
+void Bitmap::rotation90() {
+    mod = true;
+}
+void Bitmap::rotation180() {
+    mod = true;
+}
+void Bitmap::rotation270() {
+    mod = true;
+}
 
 AbstractMap* Bitmap::clone() const {
     return new Bitmap(*this);
 }
-
-
-
-// translation
-// row-wise reorder
-// col-wise reorder
-
-
-//[...][...][...][...]---[...]

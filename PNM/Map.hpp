@@ -12,7 +12,7 @@ class Map : public AbstractMap{
     public:
         void serializeraw(const _string& filename) const override;
         void serializeplain(const _string& filename) const override;
-        void greyscale() override;
+        void grayscale() override;
         void monochrome() override;
         void negative() override;
         void rotation90() override;
@@ -23,7 +23,7 @@ class Map : public AbstractMap{
         AbstractMap* clone() const override;
 
         Map(const _string& filename);
-        Map(unsigned width, unsigned height, bool isRaw, unsigned maxvalue = T::MAX_ALLOWED);
+        Map(unsigned width, unsigned height, const _string& filename, bool isRaw, int gray, unsigned maxvalue = T::MAX_ALLOWED);
         
     private:
         void deserializeplain(std::ifstream& infile) override;
@@ -34,7 +34,9 @@ class Map : public AbstractMap{
 };
 
 template <class T>
-Map<T>::Map(unsigned width, unsigned height, bool isRaw, unsigned maxvalue) : data(width, height, maxvalue), AbstractMap(isRaw){}
+Map<T>::Map(unsigned width, unsigned height, const _string& filename, bool isRaw, int gray, unsigned maxvalue) : data(width, height, maxvalue), AbstractMap(filename, isRaw, gray){
+    mod = true;
+}
 template <class T>
 void Map<T>::deserializeheader(std::ifstream& infile){
     _string magic;
@@ -58,6 +60,7 @@ void Map<T>::deserializeraw(std::ifstream& infile) {
 }
 template <class T>
 Map<T>::Map(const _string& filename){
+    // copyf(filename, "~"+filename);
     deserialize(filename);
 }
 template <class T>
@@ -70,32 +73,52 @@ void Map<T>::serializeraw(const _string& filename) const {
 }
 template <class T>
 void Map<T>::rotation90(){
+    mod = true;
     data.rotation90();
 }
 template <class T>
 void Map<T>::rotation270(){
+    mod = true;
     data.rotation270();
 }
 template <class T>
 void Map<T>::rotation180(){
+    mod = true;
     data.rotation180();
 }
 template <class T>
-void Map<T>::greyscale(){
-    data.greyscale();
+void Map<T>::grayscale(){
+    if(!isGray()){
+        g = 1;
+        mod = true;
+        data.grayscale();
+    }
 }
 template <class T>
 void Map<T>::monochrome(){
-    data.monochrome();
+    if(!isMonochrome()){
+        g = 2;
+        mod = true;
+        data.monochrome();
+    }
 }
 template <class T>
 void Map<T>::negative(){
+    mod = true;
     data.negative();
 }
 
 template <class T>
 AbstractMap* Map<T>::clone() const {
     return new Map<T>(*this);
+}
+
+
+template <>
+Map<Shade>::Map(const _string& filename){
+    g = 1;
+    // copyf(filename, "~"+filename);
+    deserialize(filename);
 }
 
 

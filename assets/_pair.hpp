@@ -6,6 +6,7 @@ class _pair {
 	D second;
 
 public:
+	_pair() = default;
 	_pair(const T& first, const D& second);
 	_pair(T&& first, D&& second);
 	_pair(const T& first, D&& second);

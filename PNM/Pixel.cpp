@@ -58,7 +58,7 @@ bool Pixel::isGray() const{
 bool Pixel::isMonochrome(unsigned char maxvalue) const {
     return (r==0 && b==0 && g==0) || (r==maxvalue && b==maxvalue && g==maxvalue);
 }
-void Pixel::greyscale(){
+void Pixel::grayscale(){
     if(!isGray()){
         int sum = r+b+g;
         r = b = g = sum/3;

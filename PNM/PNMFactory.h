@@ -4,23 +4,13 @@
 #include"AbstractMap.h"
 #include"Map.hpp"
 #include"Bitmap.h"
-
-static _string getFileType(const _string& filename) {
-    for (int i = filename.getSize() - 1; i >= 0; --i) {
-        if (filename[i] == '.') {
-            return &filename[i+1];
-            break;
-        }
-    }
-    throw std::runtime_error("invalid filename passed");
-
-}
-
+#include"../assets/fileformats.h"
 class PNMFactory{
-    static AbstractMap* add(const char* str);
+public:
+    static AbstractMap* create(const char* str);
 };
 
-AbstractMap* PNMFactory::add(const char* str){
+AbstractMap* PNMFactory::create(const char* str){
     _string format = getFileType(str);
     if(format == "ppm"){
         return new Pixmap(str);

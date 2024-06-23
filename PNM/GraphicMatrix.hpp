@@ -32,7 +32,7 @@ public:
     void rotation180();
     void rotation270();
 
-    void greyscale();
+    void grayscale();
     void monochrome();
     void negative();
     // GraphicMatrix<T>& rowcat(const GraphicMatrix<T>& o);
@@ -214,10 +214,10 @@ void GraphicMatrix<T>::rotation180(){
     }
 }
 template <class T>
-void GraphicMatrix<T>::greyscale(){
+void GraphicMatrix<T>::grayscale(){
     for(unsigned y = 0; y < h; y++){
         for(unsigned x = 0; x < w; x++){
-            data[y][x].greyscale();
+            data[y][x].grayscale();
         }
     }
 }
@@ -306,114 +306,7 @@ GraphicMatrix<T>::GraphicMatrix(std::ifstream& infile){
     }
 }
 
-
-
 template <>
-void GraphicMatrix<Shade>::greyscale(){
+void GraphicMatrix<Shade>::grayscale(){
     return;
 }
-
-
-
-// template <>
-// class GraphicMatrix<Bit>{
-//     public:
-//         GraphicMatrix() = default;
-//         GraphicMatrix(unsigned width, unsigned height);
-//         ~GraphicMatrix();
-
-//         GraphicMatrix(const GraphicMatrix<Bit>& o);
-//         GraphicMatrix(GraphicMatrix<Bit>&& o) noexcept;
-//         GraphicMatrix<Bit>& operator=(const GraphicMatrix<Bit>& o);
-//         GraphicMatrix<Bit>& operator=(GraphicMatrix<Bit>&& o) noexcept;
-
-//         void transpose();
-//         void rotation90();
-//         void rotation180();
-//         void rotation270();
-
-//         void greyscale();
-//         void monochrome();
-//         void negative();
-//     private:
-//         _bitset* data = nullptr;
-//         unsigned rs = 0;
-//         unsigned h = 0;
-
-//         void init(unsigned w, unsigned h);
-//         void destroy();
-//         void copy(const GraphicMatrix<Bit>& o);
-//         void move(GraphicMatrix<Bit>&& o);
-
-//         friend class Map<Bit>;
-//         GraphicMatrix(std::ifstream& infile);
-//         void deserializeraw(std::ifstream& infile);
-//         void deserializeplain(std::ifstream& infile);
-//         void serializeraw(const _string& filename) const;
-//         void serializeplain(const _string& filename) const;
-// };
-// template<>
-// GraphicMatrix<Bit>::GraphicMatrix(unsigned width, unsigned height){
-//     rs = (widht + 7) / 8;
-//     h = height;
-//     data = new _bitset[rs*h];
-// }
-// template<>
-// GraphicMatrix<Bit>::~GraphicMatrix(){
-//     destroy();
-// }
-
-
-// template<>
-// GraphicMatrix<Bit>::GraphicMatrix(const GraphicMatrix<Bit>& o){
-//     copy(o);
-// }
-// template<>
-// GraphicMatrix<Bit>::GraphicMatrix(GraphicMatrix<Bit>&& o) noexcept{
-//     move(std::move(o));
-// }
-// template<>
-// GraphicMatrix<Bit>& GraphicMatrix<Bit>::operator=(const GraphicMatrix<Bit>& o){
-//     if(this!=&o){
-//         destroy();
-//         copy(o);
-//     }
-//     return *this;
-// }
-// template<>
-// GraphicMatrix<Bit>& GraphicMatrix<Bit>::operator=(GraphicMatrix<Bit>&& o) noexcept{
-//     if(this != &o){
-//         destroy();
-//         move(std::move(o));
-//     }
-//     return *this;
-// }
-
-
-// template<>
-// void transpose(){
-
-// }
-// template<>
-// void GraphicMatrix<Bit>::rotation90(){}
-// template<>
-// void GraphicMatrix<Bit>::rotation180(){}
-// template<>
-// void GraphicMatrix<Bit>::rotation270(){}
-
-// template<>
-// void GraphicMatrix<Bit>::greyscale(){
-//     return;
-// }
-// template<>
-// void GraphicMatrix<Bit>::monochrome(){
-//     return;
-// }
-// template<>
-// void GraphicMatrix<Bit>::negative(){
-//     for(unsigned y = 0; y < h; y++){
-//         for(unsigned x = 0; x < rs; x++){
-//             data->flipbyte(y*rs + x);
-//         }
-//     }
-// }

@@ -99,7 +99,7 @@ _vector<T>::~_vector() {
 template<class T>
 void _vector<T>::assertIndex(size_t index) const {
 	if (index >= size) {
-		throw std::exception("Out of range");
+		throw std::runtime_error("Out of range");
 	}
 }
 
@@ -186,7 +186,7 @@ void _vector<T>::pushAt(T&& element, size_t index) {
 template<class T>
 T _vector<T>::popBack() {
 	if (empty()) {
-		throw std::exception("_vector is empty");
+		throw std::runtime_error("_vector is empty");
 	}
 	
 	

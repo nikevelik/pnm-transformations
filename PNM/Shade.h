@@ -5,7 +5,7 @@ public:
     bool isCorrect(unsigned char maxvalue) const;
     // bool isGray() const; // I am always gray!!
     bool isMonochrome(unsigned char maxvalue) const;
-    // void greyscale(); // I am always gray!!
+    // void grayscale(); // I am always gray!!
     void monochrome(unsigned char maxvalue);
     void negative(unsigned char maxvalue);
     static void check(std::ifstream& ifs, int v);
