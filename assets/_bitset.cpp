@@ -59,7 +59,7 @@ unsigned _bitset::byteof(unsigned key){
 }
 
 unsigned _bitset::maskfor(unsigned key){
-    return 1 << (key % BITS_IN_BYTE);
+    return 1 << (BITS_IN_BYTE - key % BITS_IN_BYTE - 1);
 }
 
 void _bitset::set(unsigned key){
