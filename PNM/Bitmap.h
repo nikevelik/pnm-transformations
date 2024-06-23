@@ -63,16 +63,12 @@ void Bitmap::deserializeheader(std::ifstream& infile){
 }
 
 void Bitmap::deserializeplain(std::ifstream& infile){
-    unsigned rs = (w+7)/8;
-    for (unsigned y = 0; y < h; ++y) {
-        for (unsigned x = 0; x < rs; ++x) {
-            for(int i = 7; i>=0; i--){
-                bool pixel;
-                infile >> pixel;
-                if(pixel){
-                    data.set((y * rs + x)*8 + i);
-                }
-            }
+    unsigned len = w*h;
+    for(unsigned i = 0; i < len; i++){
+        bool pixel;
+        infile >> pixel;
+        if(pixel){
+            data.set(i);
         }
     }
 }
@@ -105,14 +101,13 @@ void Bitmap::serializeplain(const _string& filename) const {
     outfile << MagicValue<Bit>::plain() << "\n";
     outfile << w << " " << h << "\n";
 
-    unsigned rs = (w + 7) / 8;
-    for (unsigned y = 0; y < h; ++y) {
-        for (unsigned x = 0; x < rs; ++x) {
-            for(int i = 7; i >= 0; i--) {
-                outfile << data.read((y * rs + x) * 8 + i) << " ";
-            }
+
+    unsigned len = w*h;
+    for(unsigned i = 0; i < len; i++){
+        outfile << data.read(i) << " ";
+        if((i+1)%w == 0){
+            outfile << "\n";
         }
-        outfile << "\n";
     }
 
     outfile.close();
