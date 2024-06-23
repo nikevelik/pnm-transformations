@@ -130,6 +130,21 @@ void Bitmap::negative() {
 }
 void Bitmap::rotation90() {
     mod = true;
+    for(unsigned y = 0; y < h/2; y++){
+        for(unsigned x = 0; x < w/2; x++){
+            bool tmp = data.read(y*w + x);
+            if(data.read(x*h + y)){
+                data.set(y*w + x);
+            }else{
+                data.clear(y*w + x);
+            }
+            if(tmp){
+                data.set(x*h + y);
+            }else{
+                data.clear(x*h + y);
+            }
+        }
+    }
 }
 void Bitmap::rotation180() {
     mod = true;
