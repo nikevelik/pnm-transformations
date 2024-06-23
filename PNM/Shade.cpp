@@ -3,7 +3,7 @@
 #include<fstream>
 #include <stdexcept>
 unsigned Shade::MAX_ALLOWED = 255;
-const float SHADE_FACTOR = 1.7
+const float SHADE_FACTOR = 1.7;
 bool Shade::isCorrect(unsigned char maxvalue) const {
     return v <= maxvalue;
 }

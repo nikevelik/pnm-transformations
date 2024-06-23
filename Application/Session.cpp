@@ -177,7 +177,7 @@ void Session::saveas(const String& filename) const noexcept{
         }
         apply(res, r, g, n);
         res->serialize(filename);
-        std::cout << "Saving Completed!";
+        std::cout << "Saving Completed!\n";
     }catch(std::exception& e){
         std::cerr << "Could not perform saveas. Err: \"" << e.what() <<"\"\n";
     }

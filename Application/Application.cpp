@@ -141,7 +141,7 @@ bool Application::parse(const String& cmd) {
     }
 
     if (command == "quit") {
-        std::cout << "exited!";
+        std::cout << "exited!\n";
         return 0;
     }
 
