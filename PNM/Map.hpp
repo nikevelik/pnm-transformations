@@ -21,7 +21,7 @@ class Map : public AbstractMap{
         // AbstractMap* clone() const override;
 
         Map(const _string& filename);
-        Map(unsigned width, unsigned height, unsigned maxvalue, bool isRaw);
+        Map(unsigned width, unsigned height, bool isRaw, unsigned maxvalue = T::MAX_ALLOWED);
         
     private:
         void deserializeplain(std::ifstream& infile) override;
@@ -32,7 +32,7 @@ class Map : public AbstractMap{
 };
 
 template <class T>
-Map<T>::Map(unsigned width, unsigned height, unsigned maxvalue, bool isRaw) : data(width, height, maxvalue), AbstractMap(isRaw){}
+Map<T>::Map(unsigned width, unsigned height, bool isRaw, unsigned maxvalue) : data(width, height, maxvalue), AbstractMap(isRaw){}
 template <class T>
 void Map<T>::deserializeheader(std::ifstream& infile){
     _string magic;
@@ -90,3 +90,6 @@ template <class T>
 void Map<T>::negative(){
     data.negative();
 }
+
+using Pixmap = Map<Pixel>;
+using GrayMap = Map<Shade>;

@@ -2,7 +2,7 @@
 
 _bitset::_bitset(unsigned size){
 	n = size;
-	data = new char[n];
+	data = new char[n]{0};
 }
 
 void _bitset::copy(const _bitset& o){
@@ -76,4 +76,21 @@ bool _bitset::read(unsigned key) const {
 
 char* _bitset::ptr(){
 	return data;
+}
+
+const char* _bitset::ptr() const {
+	return data;
+}
+
+
+// void _bitset::flip(unsigned key){	
+// 	data[byteof(key)] ^= maskfor(key);
+// }
+
+void _bitset::flipbyte(unsigned idx){
+	data[idx] = ~data[idx];
+}
+
+unsigned _bitset::size() const{
+	return n;
 }

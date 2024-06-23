@@ -42,7 +42,6 @@ void AbstractMap::deserialize(const _string& filename){
             deserializeplain(infile);
             break;
     }
-    infile.close();
 }
 
 void AbstractMap::serialize(const _string& filename) const {
