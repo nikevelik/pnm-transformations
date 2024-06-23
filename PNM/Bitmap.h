@@ -75,6 +75,12 @@ void Bitmap::deserializeplain(std::ifstream& infile){
 
 void Bitmap::deserializeraw(std::ifstream& infile){
     infile.read(data.ptr(), data.size());
+
+    //WARNING!! HOT FIX ONLY, BECAUSE ROTATION WONT WORK WITH BINARY
+    // if(raw){
+    //     serializeplain(fn);
+    //     deserialize(fn);
+    // }
 }
 
 void Bitmap::serializeraw(const _string& filename) const {
@@ -130,27 +136,52 @@ void Bitmap::negative() {
 }
 void Bitmap::rotation90() {
     mod = true;
-    for(unsigned y = 0; y < h/2; y++){
-        for(unsigned x = 0; x < w/2; x++){
-            bool tmp = data.read(y*w + x);
-            if(data.read(x*h + y)){
-                data.set(y*w + x);
-            }else{
-                data.clear(y*w + x);
-            }
-            if(tmp){
-                data.set(x*h + y);
-            }else{
-                data.clear(x*h + y);
-            }
+
+    _bitset tmp(data.size());
+    unsigned len = w*h;
+    for(unsigned i = 0; i < len; i++){
+        if(data.read(i)){
+            tmp.set((i/w)+h*(w - 1- i%w));
         }
     }
+
+    unsigned temp = w;
+    w = h;
+    h = temp;
+    data = tmp;
 }
 void Bitmap::rotation180() {
+    unsigned len = w*h;
+    for(unsigned i = 0; i < len/2; i++){
+        bool tmp = data.read(i);
+        if(data.read(len-i)){
+            data.set(i);
+        }else{
+            data.clear(i);
+        }
+        if(tmp){
+            data.set(len-i);
+        }else{
+            data.clear(len-i);
+        }
+    }
+
     mod = true;
 }
 void Bitmap::rotation270() {
     mod = true;
+    _bitset tmp(data.size());
+    unsigned len = w*h;
+    for(unsigned i = 0; i < len; i++){
+        if(data.read(i)){
+            tmp.set((h-1-i/w)+h*(i%w));
+        }
+    }
+
+    unsigned temp = w;
+    w = h;
+    h = temp;
+    data = tmp;
 }
 
 AbstractMap* Bitmap::clone() const {

@@ -7,11 +7,13 @@
 using namespace std;
 
 
-// raw -> plain -> raw
 int main(){
-    // cout << _bitset::maskfor(0) << " " << _bitset::maskfor(7);
-    Bitmap b("parsing/samples/a.pbm"); //deserialize plain
+    Bitmap a("parsing/samples/a.pbm");
+    a.serializeplain("parsing/samples/b.pbm");
+    Bitmap b("parsing/samples/b.pbm");
     b.rotation90();
-    b.serialize("parsing/samples/b.pbm"); //serialize raw
+    a.rotation270();
+    b.serialize("parsing/samples/c.pbm");
+    a.serialize("parsing/samples/d.pbm");
     return 0;
 }
