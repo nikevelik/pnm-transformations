@@ -22,10 +22,10 @@ void Session::calc(const Operation& op, int& r, int& g, bool& n) noexcept{
             n = !n;
             break;
         case Operation::RotationL:
-            r = (r + 1)%4;
+            r = (r + 3)%4;
             break;
         case Operation::RotationR:
-            r = (r + 3)%4;
+            r = (r + 1)%4;
             break;
     }
 }
