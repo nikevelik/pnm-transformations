@@ -2,8 +2,24 @@
 #include"Application.h"
 #include<sstream>
 void Application::help() const {
-    std::cout << "Application help:\n";
-    std::cout << "Commands- help, load<file>, change<sessionid>, close, sessioninfo, undo, save, saveas, collage<f1, f2, orientation, outf>, grayscale, monochrome, negative, rotate left, rotate right\n";
+    std::cout << "Available commands:\n";
+    std::cout << "  help                 - Display this help information.\n";
+    std::cout << "  switch <session_id>  - Switch to a different session by ID.\n";
+    std::cout << "  close                - Close the current session.\n";
+    std::cout << "  session              - Display information about the current session.\n";
+    std::cout << "  undo                 - Undo the last action.\n";
+    std::cout << "  quit                 - Exit the application.\n";
+    std::cout << "  save                 - Save the current session.\n";
+    std::cout << "  load <filename>      - Load a session from a file.\n";
+    std::cout << "  add <filename>       - Add a file to the current session.\n";
+    std::cout << "  saveas <filename>    - Save the current session as a new file.\n";
+    std::cout << "  grayscale            - Apply a grayscale filter to the current image.\n";
+    std::cout << "  monochrome           - Apply a monochrome filter to the current image.\n";
+    std::cout << "  negative             - Apply a negative filter to the current image.\n";
+    std::cout << "  collage <orientation> <file1> <file2> <file3> - Create a collage from two images.\n";
+    std::cout << "                          orientation: 'vertical' or 'horizontal'\n";
+    std::cout << "  rotate <direction>   - Rotate the current image.\n";
+    std::cout << "                          direction: 'left' or 'right'\n";
 }
 
 void Application::load(const String& s){
@@ -17,16 +33,25 @@ void Application::load(const String& s){
 }
 
 void Application::change(int id){
+    if(id >= sess.getSize() || id <0){
+        std::cerr << "not valid session id\n";
+        return;        
+    }
     std::cout << "changing session to " << (curr = id) << "\n"; 
 }
 
 void Application::add(const String& s){
+    if(curr == -1){
+        std::cerr << "cannot add in non-existend session\n";
+        return;
+    }
     sess[curr].add(s);
 }
 
 void Application::close(){
     if(curr == -1){
         std::cerr << "cannot close non-existend session\n";
+        return;
     }
     sess.popAt(curr);
     curr = -1;
@@ -34,45 +59,51 @@ void Application::close(){
 }
 
 void Application::sessioninfo() const {
-    if(curr!=-1){
-        std::cout << "sessionID: " << curr << "\nadded images: ";
-        sess[curr].info();
-    }else{
+    if(curr==-1){
         std::cerr << "cannot display info of non-existend session\n";
+        return;
     }
+    std::cout << "sessionID: " << curr << "\nadded images: ";
+    sess[curr].info();
+
 }
 
 void Application::undo(){
-    if(curr!=-1){
-        sess[curr].undo();
-    }else{
+    if(curr==-1){
         std::cerr << "cannot display udno in non-existend session\n";
+        return;
     }
+    sess[curr].undo();
 }
 
 void Application::save(){
-    if(curr!=-1){
-        sess[curr].save();
-    }else{
-        std::cerr << "cannot display save in non-existend session\n";
+    if(curr==-1){
+        std::cerr << "cannot save in non-existend session\n";
+        return;
     }
+    sess[curr].save();
+
 }
 void Application::saveas(const String& s){
-    if(curr!=-1){
-        sess[curr].saveas(s);
-    }else{
-        std::cerr << "cannot display save in non-existend session\n";
+    if(curr==-1){
+        std::cerr << "cannot save in non-existend session\n";
+        return;
     }
+    sess[curr].saveas(s);
 }
 void Application::collage(const String&  s1, const String& s2, bool isVertical, const String& s3){
+    if(curr==-1){
+        std::cerr << "cannot collage in non-existend session\n";
+        return;
+    }
     sess[curr].collage(s1, s2, isVertical, s3);
 }
 void Application::operate(const Operation& op){
     if(curr!=-1){
-        sess[curr].operate(op);
-    }else{
         std::cerr << "cannot display operate in non-existend session\n";
+        return;
     }
+    sess[curr].operate(op);
 }
 
 

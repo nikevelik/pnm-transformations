@@ -3,7 +3,7 @@
 #include<iostream>
 #include<stdexcept>
 void Session::collage(const String& i1, const String& i2, bool isVertical, const String& out) noexcept{
-    std::cerr << "Collages are not available.";
+    std::cerr << "Collages are not available.\n";
 }
 
 void Session::calc(const Operation& op, int& r, int& g, bool& n) noexcept{
