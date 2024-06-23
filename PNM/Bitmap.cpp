@@ -4,6 +4,9 @@
 #include <stdexcept>
 #include <fstream>
 
+const unsigned ALIGNMENT_ADDITIVE = 7;
+const unsigned ALIGNMENT_FACTOR = 8;
+
 Bitmap::Bitmap(const String& filename){
     g = Grayness::Monochrome;
     deserialize(filename);
@@ -23,7 +26,7 @@ void Bitmap::deserializeheader(std::ifstream& infile){
     if(!infile.good()){
         throw std::runtime_error("Invalid header values in file");
     }
-    data = Bitset(h*(w+7)/8);
+    data = Bitset(h*(w+ALIGNMENT_ADDITIVE)/ALIGNMENT_FACTOR);
     char newline;
     infile.get(newline);
     if(!infile.good() || newline != '\n'){
@@ -95,7 +98,7 @@ void Bitmap::monochrome() {
 }
 void Bitmap::negative() {
     mod = true;
-    unsigned rs = (w+7)/8;
+    unsigned rs = (w+ALIGNMENT_ADDITIVE)/ALIGNMENT_FACTOR;
     for(unsigned y = 0; y < h; y++){
         for(unsigned x = 0; x < rs; x++){
             data.flipbyte(y*rs + x);
