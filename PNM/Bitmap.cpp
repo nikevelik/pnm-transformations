@@ -1,15 +1,12 @@
 #pragma once
 #include "Bitmap.h"
+#include "Grayness.h"
 #include <stdexcept>
 #include <fstream>
 
 Bitmap::Bitmap(const String& filename){
-    g = 2;
+    g = Grayness::Monochrome;
     deserialize(filename);
-}
-
-Bitmap::Bitmap(unsigned width, unsigned height, const String& filename, bool isRaw, int gray) : w(width), h(height), data((width + 7) / 8 * height), AbstractMap(filename, isRaw, gray){
-    mod = true;
 }
 
 void Bitmap::deserializeheader(std::ifstream& infile){

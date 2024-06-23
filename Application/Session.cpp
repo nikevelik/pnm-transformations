@@ -6,13 +6,13 @@ void Session::collage(const String& i1, const String& i2, bool isVertical, const
     std::cerr << "Collages are not available.\n";
 }
 
-void Session::calc(const Operation& op, int& r, int& g, bool& n) noexcept{
+void Session::calc(const Operation& op, int& r, Grayness& g, bool& n) noexcept{
     switch (op){
         case Operation::Grayscale:
-            g = ((g == 2) ? 2 : 1);
+            g = ((g == Grayness::Monochrome) ? Grayness::Monochrome : Grayness::Grayscale);
             break;
         case Operation::Monochrome:
-            g = 2;
+            g = Grayness::Monochrome;
             break;
         case Operation::Negative:
             n = !n;
@@ -26,11 +26,11 @@ void Session::calc(const Operation& op, int& r, int& g, bool& n) noexcept{
     }
 }
 
-void Session::apply(AbstractMap* target, int r, int g, bool n) noexcept{
+void Session::apply(AbstractMap* target, int r, Grayness g, bool n) noexcept{
     try{
-        if(g == 2){
+        if(g == Grayness::Monochrome){
             target->monochrome();
-        }else if(g == 1){
+        }else if(g == Grayness::Grayscale){
             target->grayscale();
         }
         if(r == 1){
@@ -128,11 +128,11 @@ void Session::save()noexcept{
     }
     int j = files.getSize()-1;
     int r = 0;
-    int g = 0;
+    Grayness g = Grayness::Colorful;
     bool n = 0;
     for(int i = operations.getSize()-1; i>=0; i--){
         calc(operations[i], r, g, n);
-        if(r == 0 && g == 0 && n ==0){
+        if(r == 0 && g == Grayness::Colorful && n ==0){
             continue;
         }
         while(j>=0 && files[j].getSecond()>i){
@@ -164,7 +164,7 @@ void Session::save()noexcept{
 void Session::saveas(const String& filename) const noexcept{
     try{
         int r = 0;
-        int g = 0;
+        Grayness g = Grayness::Colorful;
         bool n = 0;
         AbstractMap* res;
         if(img[0]){

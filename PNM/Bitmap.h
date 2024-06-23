@@ -16,7 +16,6 @@ class Bitmap : public AbstractMap{
         AbstractMap* clone() const override;
 
         Bitmap(const String& filename);
-        Bitmap(unsigned width, unsigned height, const String& filename, bool isRaw, int gray);
         
     private:
         void deserializeplain(std::ifstream& infile) override;

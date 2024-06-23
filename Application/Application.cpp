@@ -99,7 +99,7 @@ void Application::collage(const String&  s1, const String& s2, bool isVertical, 
     sess[curr].collage(s1, s2, isVertical, s3);
 }
 void Application::operate(const Operation& op){
-    if(curr!=-1){
+    if(curr==-1){
         std::cerr << "cannot display operate in non-existend session\n";
         return;
     }

@@ -1,9 +1,8 @@
 #pragma once
+#include "Grayness.h"
 #include"AbstractMap.h"
 #include<fstream>
 #include <stdexcept>
-
-AbstractMap::AbstractMap(const String& filename, bool isRaw, int gray):fn(filename), raw(isRaw), g(gray) {}
 
 void AbstractMap::deserialize(const String& filename){
     fn = filename;
@@ -47,11 +46,11 @@ void AbstractMap::serialize() const {
 }
 
 bool AbstractMap::isGray() const {
-    return g>0;
+    return g>Grayness::Colorful;
 }
 
 bool AbstractMap::isMonochrome() const {
-    return g==2;
+    return g==Grayness::Monochrome;
 }
 
 const String& AbstractMap::getFilename() const{

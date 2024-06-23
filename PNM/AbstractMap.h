@@ -4,7 +4,6 @@
 class AbstractMap{
     public:
         AbstractMap() = default;
-        AbstractMap(const String& filename, bool isRaw, int g = 0);
         virtual void serialize() const;
         virtual void serialize(const String& filename) const;
         virtual void serializeraw(const String& filename) const = 0;
@@ -21,13 +20,13 @@ class AbstractMap{
         void restore();
         const String& getFilename() const;
         bool isGray() const;
-        bool isMonochrome() const;
+        bool isMonochrome() const; 
     protected:
         virtual void deserializeplain(std::ifstream& infile) = 0;
         virtual void deserializeraw(std::ifstream& infile) = 0;
         virtual void deserializeheader(std::ifstream& infile) = 0;
         String fn;
-        int g = 0;
+        Grayness g = Grayness::Colorful;
         bool raw = false; 
         mutable bool mod = false;
 };

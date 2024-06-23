@@ -4,6 +4,7 @@
 #include "../assets/Vector.hpp"
 #include "../assets/Pair.hpp"
 #include "Operation.h"
+#include "../PNM/Grayness.h"
 #include "../PNM/AbstractMap.h"
 #include "../PNM/PNMFactory.h"
 #include "../assets/fileformats.h"
@@ -20,8 +21,8 @@ class Session{
         void operate(const Operation& op) noexcept;
         unsigned getID() const noexcept;
     private:
-        static void calc(const Operation& op, int& r, int& g, bool& n) noexcept;
-        static void apply(AbstractMap* target, int r, int g, bool n) noexcept;
+        static void calc(const Operation& op, int& r, Grayness& g, bool& n) noexcept;
+        static void apply(AbstractMap* target, int r, Grayness g, bool n) noexcept;
         Container<AbstractMap, PNMFactory> img;
         Vector<Pair<String, unsigned>> files;
         Vector<Operation> operations;

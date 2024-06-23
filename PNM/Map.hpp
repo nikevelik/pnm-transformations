@@ -5,6 +5,7 @@
 #include <fstream>
 #include <stdexcept>
 #include "Shade.h"
+#include "Grayness.h"
 #include "Pixel.h"
 
 template<class T>
@@ -21,7 +22,6 @@ class Map : public AbstractMap{
         AbstractMap* clone() const override;
 
         Map(const String& filename);
-        Map(unsigned width, unsigned height, const String& filename, bool isRaw, int gray, unsigned maxvalue = T::MAX_ALLOWED);
         
     private:
         void deserializeplain(std::ifstream& infile) override;
@@ -31,10 +31,6 @@ class Map : public AbstractMap{
         GraphicMatrix<T> data;
 };
 
-template <class T>
-Map<T>::Map(unsigned width, unsigned height, const String& filename, bool isRaw, int gray, unsigned maxvalue) : data(width, height, maxvalue), AbstractMap(filename, isRaw, gray){
-    mod = true;
-}
 template <class T>
 void Map<T>::deserializeheader(std::ifstream& infile){
     String magic;
@@ -86,7 +82,7 @@ void Map<T>::rotation180(){
 template <class T>
 void Map<T>::grayscale(){
     if(!isGray()){
-        g = 1;
+        g = Grayness::Grayscale;
         mod = true;
         data.grayscale();
     }
@@ -94,7 +90,7 @@ void Map<T>::grayscale(){
 template <class T>
 void Map<T>::monochrome(){
     if(!isMonochrome()){
-        g = 2;
+        g = Grayness::Monochrome;
         mod = true;
         data.monochrome();
     }
@@ -113,7 +109,7 @@ AbstractMap* Map<T>::clone() const {
 
 template <>
 Map<Shade>::Map(const String& filename){
-    g = 1;
+    g = Grayness::Grayscale;
     deserialize(filename);
 }
 
