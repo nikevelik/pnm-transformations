@@ -29,7 +29,6 @@ public:
 	void add(const T& elem);
 
 	void add(const char* str);
-	//void add(class Factory::RecordType str);
 
 	const T* operator[](unsigned) const;
 	T* operator[](unsigned);
@@ -37,7 +36,6 @@ public:
 };
 
 template<class T, class Factory>
-//void Container<T, Factory>::add(class Factory::RecordType str)
 void Container<T, Factory>::add(const char* str)
 {
 	T* ptr = Factory::create(str);

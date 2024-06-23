@@ -1,17 +1,19 @@
 #pragma once
 #include "Bitmap.h"
-Bitmap::Bitmap(const _string& filename){
+#include <stdexcept>
+#include <fstream>
+
+Bitmap::Bitmap(const String& filename){
     g = 2;
-    // copyf(filename, "~"+filename);
     deserialize(filename);
 }
 
-Bitmap::Bitmap(unsigned width, unsigned height, const _string& filename, bool isRaw, int gray) : w(width), h(height), data((width + 7) / 8 * height), AbstractMap(filename, isRaw, gray){
+Bitmap::Bitmap(unsigned width, unsigned height, const String& filename, bool isRaw, int gray) : w(width), h(height), data((width + 7) / 8 * height), AbstractMap(filename, isRaw, gray){
     mod = true;
 }
 
 void Bitmap::deserializeheader(std::ifstream& infile){
-    _string magic;
+    String magic;
     infile >> magic;
     if (magic == MagicValue<Bit>::plain()) {
         raw = false;
@@ -24,7 +26,7 @@ void Bitmap::deserializeheader(std::ifstream& infile){
     if(!infile.good()){
         throw std::runtime_error("Invalid header values in file");
     }
-    data = _bitset(h*(w+7)/8);
+    data = Bitset(h*(w+7)/8);
     char newline;
     infile.get(newline);
     if(!infile.good() || newline != '\n'){
@@ -46,14 +48,13 @@ void Bitmap::deserializeplain(std::ifstream& infile){
 void Bitmap::deserializeraw(std::ifstream& infile){
     infile.read(data.ptr(), data.size());
 
-    //WARNING!! HOT FIX ONLY, BECAUSE ROTATION WONT WORK WITH BINARY
     if(raw){
         serializeplain(fn);
         deserialize(fn);
     }
 }
 
-void Bitmap::serializeraw(const _string& filename) const {
+void Bitmap::serializeraw(const String& filename) const {
     std::ofstream outfile(filename.c_str(), std::ios::binary);
     if (!outfile) {
         throw std::runtime_error("Error: Could not open file for writing.");
@@ -68,7 +69,7 @@ void Bitmap::serializeraw(const _string& filename) const {
     outfile.close();
 }
 
-void Bitmap::serializeplain(const _string& filename) const {
+void Bitmap::serializeplain(const String& filename) const {
     std::ofstream outfile(filename.c_str());
     if (!outfile) {
         throw std::runtime_error("Error: Could not open file for writing.");
@@ -107,7 +108,7 @@ void Bitmap::negative() {
 void Bitmap::rotation90() {
     mod = true;
 
-    _bitset tmp(data.size());
+    Bitset tmp(data.size());
     unsigned len = w*h;
     for(unsigned i = 0; i < len; i++){
         if(data.read(i)){
@@ -140,7 +141,7 @@ void Bitmap::rotation180() {
 }
 void Bitmap::rotation270() {
     mod = true;
-    _bitset tmp(data.size());
+    Bitset tmp(data.size());
     unsigned len = w*h;
     for(unsigned i = 0; i < len; i++){
         if(data.read(i)){

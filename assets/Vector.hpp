@@ -4,7 +4,7 @@
 // credit: oop course
 
 template<class T>
-class _vector {
+class Vector {
 private:
 	static const short INITIAL_CAPACITY = 1;
 	static const short RESIZE_COEF = 2; 
@@ -20,13 +20,13 @@ private:
 	void downsizeIfNeeded();
 public:
 
-	_vector();
-	_vector(size_t capacity);
-	_vector(const _vector<T>& other);
-	_vector(_vector<T>&& other);
-	_vector<T>& operator=(const _vector<T>& other);
-	_vector<T>& operator=(_vector<T>&& other);
-	~_vector();
+	Vector();
+	Vector(size_t capacity);
+	Vector(const Vector<T>& other);
+	Vector(Vector<T>&& other);
+	Vector<T>& operator=(const Vector<T>& other);
+	Vector<T>& operator=(Vector<T>&& other);
+	~Vector();
 
 	size_t getSize() const;
 	size_t getCapacity() const;
@@ -47,32 +47,32 @@ public:
 	const T& operator[](size_t index) const;
 
 private:
-	void move(_vector<T>&& other);
-	void copyFrom(const _vector<T>& other);
+	void move(Vector<T>&& other);
+	void copyFrom(const Vector<T>& other);
 	void free();
 };
 
 
 template<class T>
-_vector<T>::_vector() : _vector(INITIAL_CAPACITY) { }
+Vector<T>::Vector() : Vector(INITIAL_CAPACITY) { }
 
 
 template<class T>
-_vector<T>::_vector(size_t capacity) : capacity(capacity) {
+Vector<T>::Vector(size_t capacity) : capacity(capacity) {
 	data = new T[capacity];
 }
 
 template<class T>
-_vector<T>::_vector(const _vector<T>& other) {
+Vector<T>::Vector(const Vector<T>& other) {
 	copyFrom(other);
 }
 template<class T>
-_vector<T>::_vector(_vector<T>&& other) {
+Vector<T>::Vector(Vector<T>&& other) {
 	move(std::move(other));
 }
 
 template<class T>
-_vector<T>& _vector<T>::operator=(const _vector<T>& other) {
+Vector<T>& Vector<T>::operator=(const Vector<T>& other) {
 	if (this != &other) {
 		free();
 		copyFrom(other);
@@ -82,7 +82,7 @@ _vector<T>& _vector<T>::operator=(const _vector<T>& other) {
 }
 
 template<class T>
-_vector<T>& _vector<T>::operator=(_vector<T>&& other) {
+Vector<T>& Vector<T>::operator=(Vector<T>&& other) {
 	if (this != &other) {
 		free();
 		move(std::move(other));
@@ -92,33 +92,33 @@ _vector<T>& _vector<T>::operator=(_vector<T>&& other) {
 }
 
 template<class T>
-_vector<T>::~_vector() {
+Vector<T>::~Vector() {
 	free();
 }
 
 template<class T>
-void _vector<T>::assertIndex(size_t index) const {
+void Vector<T>::assertIndex(size_t index) const {
 	if (index >= size) {
 		throw std::runtime_error("Out of range");
 	}
 }
 
 template<class T>
-void _vector<T>::upsizeIfNeeded() {
+void Vector<T>::upsizeIfNeeded() {
 	if (size == capacity) {
 		resize(capacity * RESIZE_COEF);
 	}
 }
 
 template<class T>
-void _vector<T>::downsizeIfNeeded() {
+void Vector<T>::downsizeIfNeeded() {
 	if (size * RESIZE_COEF * RESIZE_COEF <= capacity) {
 		resize(capacity / RESIZE_COEF);
 	}
 }
 
 template<class T>
-void _vector<T>::resize(size_t newCapacity) {
+void Vector<T>::resize(size_t newCapacity) {
 	capacity = newCapacity;
 	T* temp = new T[capacity];
 
@@ -136,29 +136,29 @@ void _vector<T>::resize(size_t newCapacity) {
 }
 
 template<class T>
-size_t _vector<T>::getSize() const {
+size_t Vector<T>::getSize() const {
 	return size;
 }
 
 template<class T>
-size_t _vector<T>::getCapacity() const {
+size_t Vector<T>::getCapacity() const {
 	return capacity;
 }
 
 template<class T>
-void _vector<T>::pushBack(const T& element) {
+void Vector<T>::pushBack(const T& element) {
 	upsizeIfNeeded();
 	data[size++] = element;
 }
 
 template<class T>
-void _vector<T>::pushBack(T&& element) {
+void Vector<T>::pushBack(T&& element) {
 	upsizeIfNeeded();
 	data[size++] = std::move(element);
 }
 
 template<class T>
-void _vector<T>::pushAt(const T& element, size_t index) {
+void Vector<T>::pushAt(const T& element, size_t index) {
 	assertIndex(index);
 	upsizeIfNeeded();
 
@@ -171,7 +171,7 @@ void _vector<T>::pushAt(const T& element, size_t index) {
 }
 
 template<class T>
-void _vector<T>::pushAt(T&& element, size_t index) {
+void Vector<T>::pushAt(T&& element, size_t index) {
 	assertIndex(index);
 	upsizeIfNeeded();
 
@@ -184,9 +184,9 @@ void _vector<T>::pushAt(T&& element, size_t index) {
 }
 
 template<class T>
-T _vector<T>::popBack() {
+T Vector<T>::popBack() {
 	if (empty()) {
-		throw std::runtime_error("_vector is empty");
+		throw std::runtime_error("Vector is empty");
 	}
 	
 	
@@ -195,7 +195,7 @@ T _vector<T>::popBack() {
 }
 
 template<class T>
-T _vector<T>::popAt(size_t index) {
+T Vector<T>::popAt(size_t index) {
 	assertIndex(index);
 	
 	downsizeIfNeeded();
@@ -210,36 +210,36 @@ T _vector<T>::popAt(size_t index) {
 }
 
 template<class T>
-bool _vector<T>::empty() const {
+bool Vector<T>::empty() const {
 	return size == 0;
 }
 
 template<class T>
-void _vector<T>::clear() {
+void Vector<T>::clear() {
 	size = 0;
 }
 
 template<class T>
-void _vector<T>::shrinkToFit() {
+void Vector<T>::shrinkToFit() {
 	resize(size);
 }
 
 template<class T>
-T& _vector<T>::operator[](size_t index) {
+T& Vector<T>::operator[](size_t index) {
 	assertIndex(index);
 
 	return data[index];
 }
 
 template<class T>
-const T& _vector<T>::operator[](size_t index) const {
+const T& Vector<T>::operator[](size_t index) const {
 	assertIndex(index);
 
 	return data[index];
 }
 
 template<class T>
-void _vector<T>::move(_vector<T>&& other) {
+void Vector<T>::move(Vector<T>&& other) {
 	size = other.size;
 	capacity = other.capacity;
 	data = other.data;
@@ -249,7 +249,7 @@ void _vector<T>::move(_vector<T>&& other) {
 }
 
 template<class T>
-void _vector<T>::copyFrom(const _vector<T>& other) {
+void Vector<T>::copyFrom(const Vector<T>& other) {
 	size = other.size;
 	capacity = other.capacity;
 	data = new T[capacity];
@@ -260,7 +260,7 @@ void _vector<T>::copyFrom(const _vector<T>& other) {
 }
 
 template<class T>
-void _vector<T>::free() {
+void Vector<T>::free() {
 	delete[] data;
 	data = nullptr;
 	size = capacity = 0;

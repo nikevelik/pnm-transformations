@@ -1,6 +1,6 @@
 #pragma once
 #include<stdexcept>
-#include"../assets/_string.h"
+#include"../assets/String.h"
 #include"AbstractMap.h"
 #include"Map.hpp"
 #include"Bitmap.h"
@@ -11,7 +11,7 @@ public:
 };
 
 AbstractMap* PNMFactory::create(const char* str){
-    _string format = getFileType(str);
+    String format = getFileType(str);
     if(format == "ppm"){
         return new Pixmap(str);
     }

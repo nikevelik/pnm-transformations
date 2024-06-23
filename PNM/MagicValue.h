@@ -1,5 +1,5 @@
 #pragma once
-#include "../assets/_string.h"
+#include "../assets/String.h"
 
 template <class T>
 struct MagicValue;
@@ -7,19 +7,19 @@ struct MagicValue;
 
 template <>
 struct MagicValue<class Bit> {
-    static const _string plain() { return "P1"; }
-    static const _string raw() { return "P4"; }
+    static const String plain() { return "P1"; }
+    static const String raw() { return "P4"; }
 };
 
 template <>
 struct MagicValue<class Shade> {
-    static const _string plain() { return "P2"; }
-    static const _string raw() { return "P5"; }
+    static const String plain() { return "P2"; }
+    static const String raw() { return "P5"; }
 };
 
 template <>
 struct MagicValue<class Pixel> {    
-    static const _string plain() { return "P3"; }
-    static const _string raw() { return "P6"; }
+    static const String plain() { return "P3"; }
+    static const String raw() { return "P6"; }
 };
 

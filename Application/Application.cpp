@@ -1,11 +1,12 @@
 #pragma once
 #include"Application.h"
+#include<sstream>
 void Application::help() const {
     std::cout << "Application help:\n";
     std::cout << "Commands- help, load<file>, change<sessionid>, close, sessioninfo, undo, save, saveas, collage<f1, f2, orientation, outf>, grayscale, monochrome, negative, rotate left, rotate right\n";
 }
 
-void Application::load(const _string& s){
+void Application::load(const String& s){
     sess.pushBack(Session());
     curr = sess.getSize()-1;
     std::cout << "Session with ID: " << sess[curr].getID() << " started\n";
@@ -22,7 +23,7 @@ void Application::change(int id){
     }
 }
 
-void Application::add(const _string& s){
+void Application::add(const String& s){
     sess[curr].add(s);
 }
 
@@ -58,14 +59,14 @@ void Application::save(){
         std::cerr << "cannot display save in non-existend session\n";
     }
 }
-void Application::saveas(const _string& s){
+void Application::saveas(const String& s){
     if(curr!=-1){
         sess[curr].saveas(s);
     }else{
         std::cerr << "cannot display save in non-existend session\n";
     }
 }
-void Application::collage(const _string&  s1, const _string& s2, bool isVertical, const _string& s3){
+void Application::collage(const String&  s1, const String& s2, bool isVertical, const String& s3){
     sess[curr].collage(s1, s2, isVertical, s3);
 }
 void Application::operate(const Operation& op){
@@ -77,9 +78,9 @@ void Application::operate(const Operation& op){
 }
 
 
-bool Application::parse(const _string& cmd) {
+bool Application::parse(const String& cmd) {
     std::istringstream iss(cmd.c_str());
-    _string command;
+    String command;
     iss >> command;
 
     if (command == "help") {
@@ -121,21 +122,21 @@ bool Application::parse(const _string& cmd) {
     }
 
     if (command == "load") {
-        _string filename;
+        String filename;
         iss >> filename;
         load(filename.c_str());
         return 1;
     }
 
     if (command == "add") {
-        _string filename;
+        String filename;
         iss >> filename;
         add(filename);
         return 1;
     }
 
     if (command == "saveas") {
-        _string filename;
+        String filename;
         iss >> filename;
         saveas(filename);
         return 1;
@@ -157,7 +158,7 @@ bool Application::parse(const _string& cmd) {
     }
 
     if (command == "collage") {
-        _string orientation, file1, file2, file3;
+        String orientation, file1, file2, file3;
         iss >> orientation >> file1 >> file2 >> file3;
         bool isVertical = (orientation == "vertical");
         collage(file1, file2, isVertical, file3);
@@ -166,7 +167,7 @@ bool Application::parse(const _string& cmd) {
 
 
     if (command == "rotate") {
-        _string direction;
+        String direction;
         iss >> direction;
         if (direction == "left") {
             operate(Operation::RotationL);

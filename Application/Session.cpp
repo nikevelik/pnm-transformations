@@ -1,6 +1,8 @@
 #pragma once
 #include"Session.h"
-void Session::collage(const _string& i1, const _string& i2, bool isVertical, const _string& out) noexcept{
+#include<iostream>
+#include<stdexcept>
+void Session::collage(const String& i1, const String& i2, bool isVertical, const String& out) noexcept{
     AbstractMap* ptr1, *ptr2;
     for(unsigned i = 0; i <files.getSize(); i++){
         if(files[i].getFirst() == out){
@@ -70,7 +72,7 @@ void Session::apply(AbstractMap* target, int r, int g, bool n) noexcept{
         }
     }catch(std::exception& e){
         try{
-            target->deserialize(target->getFilename()); // return to default
+            target->deserialize(target->getFilename());
             std::cerr << "Could not apply a transformation to file:" + target->getFilename() + ". Please try again.";
         }catch(std::exception& e){
             std::cerr << "Could not apply a transformation to file:"+target->getFilename() +" AND could not return it to default state. Please discard your changes and try again later.";
@@ -95,7 +97,7 @@ void Session::info() const noexcept{
     std::cout << "\n";
 }
 
-void Session::add(const _string& filename) noexcept{
+void Session::add(const String& filename) noexcept{
     if(isValidFileType(filename)){
         for(unsigned i = 0; i <files.getSize(); i++){
             if(files[i].getFirst() == filename){
@@ -109,7 +111,7 @@ void Session::add(const _string& filename) noexcept{
                 return;
             }
         }
-        files.pushBack(_pair<_string, unsigned>(filename, operations.getSize()));
+        files.pushBack(Pair<String, unsigned>(filename, operations.getSize()));
         std::cout << "Image \"" << filename <<"\" added\n";
     }else{
         std::cerr << "file name is not valid\n";
@@ -120,7 +122,7 @@ void Session::add(const _string& filename) noexcept{
 void Session::undo() noexcept{
     if(operations.getSize()==0 && files.getSize() <= 1 && img.getSize() == 0){
         std::cout << "nothing to undo\n";
-        return; // session just started
+        return;
     }
     if(files.getSize()>0 && files[files.getSize()-1].getSecond()==operations.getSize()){
         files.popBack();
@@ -183,23 +185,25 @@ void Session::save()noexcept{
     std::cout << "Saving Completed!\n";
 }
 
-void Session::saveas(const _string& filename) const noexcept{
-    int r = 0;
-    int g = 0;
-    bool n = 0;
-    AbstractMap* res;
+void Session::saveas(const String& filename) const noexcept{
     try{
-        res = PNMFactory::create(filename.c_str());
-    }catch(std::exception& e){
-        std::cerr << "Could not perform saveas. Err: \"" << e.what() <<"\"\n";
-    }
-    for(int i = operations.getSize()-1; i>=0; i--){
-        calc(operations[i], r, g, n);
-    }
-    try{
+        int r = 0;
+        int g = 0;
+        bool n = 0;
+        AbstractMap* res;
+        if(img[0]){
+             res = img[0]->clone();
+        }else{
+            res = PNMFactory::create(files[0].getFirst().c_str());
+        }
+        for(int i = operations.getSize()-1; i>=0; i--){
+            calc(operations[i], r, g, n);
+        }
         apply(res, r, g, n);
         res->serialize(filename);
+        std::cout << "Saving Completed!";
     }catch(std::exception& e){
         std::cerr << "Could not perform saveas. Err: \"" << e.what() <<"\"\n";
     }
+    
 }

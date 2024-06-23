@@ -1,6 +1,6 @@
 #pragma once
 #include "AbstractMap.h"
-#include "../assets/_string.h"
+#include "../assets/String.h"
 #include "GraphicMatrix.hpp"
 #include <fstream>
 #include <stdexcept>
@@ -10,8 +10,8 @@
 template<class T>
 class Map : public AbstractMap{
     public:
-        void serializeraw(const _string& filename) const override;
-        void serializeplain(const _string& filename) const override;
+        void serializeraw(const String& filename) const override;
+        void serializeplain(const String& filename) const override;
         void grayscale() override;
         void monochrome() override;
         void negative() override;
@@ -22,8 +22,8 @@ class Map : public AbstractMap{
         // AbstractMap* collagehorizontal() const override;
         AbstractMap* clone() const override;
 
-        Map(const _string& filename);
-        Map(unsigned width, unsigned height, const _string& filename, bool isRaw, int gray, unsigned maxvalue = T::MAX_ALLOWED);
+        Map(const String& filename);
+        Map(unsigned width, unsigned height, const String& filename, bool isRaw, int gray, unsigned maxvalue = T::MAX_ALLOWED);
         
     private:
         void deserializeplain(std::ifstream& infile) override;
@@ -34,12 +34,12 @@ class Map : public AbstractMap{
 };
 
 template <class T>
-Map<T>::Map(unsigned width, unsigned height, const _string& filename, bool isRaw, int gray, unsigned maxvalue) : data(width, height, maxvalue), AbstractMap(filename, isRaw, gray){
+Map<T>::Map(unsigned width, unsigned height, const String& filename, bool isRaw, int gray, unsigned maxvalue) : data(width, height, maxvalue), AbstractMap(filename, isRaw, gray){
     mod = true;
 }
 template <class T>
 void Map<T>::deserializeheader(std::ifstream& infile){
-    _string magic;
+    String magic;
     infile >> magic;
     if (magic == MagicValue<T>::plain()) {
         raw = false;
@@ -59,16 +59,15 @@ void Map<T>::deserializeraw(std::ifstream& infile) {
     data.deserializeraw(infile);    
 }
 template <class T>
-Map<T>::Map(const _string& filename){
-    // copyf(filename, "~"+filename);
+Map<T>::Map(const String& filename){
     deserialize(filename);
 }
 template <class T>
-void Map<T>::serializeplain(const _string& filename) const {
+void Map<T>::serializeplain(const String& filename) const {
     data.serializeplain(filename);
 }
 template <class T>
-void Map<T>::serializeraw(const _string& filename) const {
+void Map<T>::serializeraw(const String& filename) const {
     data.serializeraw(filename);
 }
 template <class T>
@@ -115,9 +114,8 @@ AbstractMap* Map<T>::clone() const {
 
 
 template <>
-Map<Shade>::Map(const _string& filename){
+Map<Shade>::Map(const String& filename){
     g = 1;
-    // copyf(filename, "~"+filename);
     deserialize(filename);
 }
 

@@ -2,13 +2,12 @@
 #include <utility>
 #include <fstream>
 #include "MagicValue.h"
-#include "../assets/_string.h"
-#include "../assets/_bitset.h"
+#include "../assets/String.h"
+#include "../assets/Bitset.h"
 
 template <class T>
 class Map;
 
-// T needs to have MagicValue, isCorrect, MAX_ALLOWED, grayscale, monochrome, negative
 template <class T>
 class GraphicMatrix{
 public:
@@ -57,8 +56,8 @@ private:
     GraphicMatrix(std::ifstream& infile);
     void deserializeraw(std::ifstream& infile);
     void deserializeplain(std::ifstream& infile);
-    void serializeraw(const _string& filename) const;
-    void serializeplain(const _string& filename) const;
+    void serializeraw(const String& filename) const;
+    void serializeplain(const String& filename) const;
 };
 template <class T>
 void GraphicMatrix<T>::copy(const GraphicMatrix<T>& o){
@@ -261,7 +260,7 @@ void GraphicMatrix<T>::deserializeplain(std::ifstream& infile){
     }
 }
 template <class T>
-void GraphicMatrix<T>::serializeraw(const _string& filename) const{
+void GraphicMatrix<T>::serializeraw(const String& filename) const{
     std::ofstream outfile(filename.c_str(), std::ios::binary);
     if (!outfile) {
         throw std::runtime_error("Error: Could not open file for writing.");
@@ -274,7 +273,7 @@ void GraphicMatrix<T>::serializeraw(const _string& filename) const{
     }
 }
 template <class T>
-void GraphicMatrix<T>::serializeplain(const _string& filename) const{
+void GraphicMatrix<T>::serializeplain(const String& filename) const{
     std::ofstream outfile(filename.c_str());
     if (!outfile) {
         throw std::runtime_error("Error: Could not open file for writing");

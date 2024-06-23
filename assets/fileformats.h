@@ -1,6 +1,6 @@
 #pragma once
-#include "_string.h"
-_string getFileType(const _string& filename) {
+#include "String.h"
+String getFileType(const String& filename) {
     for (int i = filename.getSize() - 1; i >= 0; --i) {
         if (filename[i] == '.') {
             return &filename[i+1];
@@ -11,9 +11,9 @@ _string getFileType(const _string& filename) {
 
 }
 
-bool isValidFileType(const _string& filename){
+bool isValidFileType(const String& filename){
     try{
-        _string format = getFileType(filename);
+        String format = getFileType(filename);
         return format=="ppm" || format =="pgm" || format == "pbm";
     }catch(...){
         return false;

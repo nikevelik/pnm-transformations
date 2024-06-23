@@ -1,9 +1,11 @@
 #pragma once
 #include"AbstractMap.h"
+#include<fstream>
+#include <stdexcept>
 
-AbstractMap::AbstractMap(const _string& filename, bool isRaw, int gray):fn(filename), raw(isRaw), g(gray) {}
+AbstractMap::AbstractMap(const String& filename, bool isRaw, int gray):fn(filename), raw(isRaw), g(gray) {}
 
-void AbstractMap::deserialize(const _string& filename){
+void AbstractMap::deserialize(const String& filename){
     fn = filename;
     std::ifstream infile(filename.c_str(), std::ios::binary);
     if (!infile) {
@@ -20,7 +22,7 @@ void AbstractMap::deserialize(const _string& filename){
     }
 }
 
-void AbstractMap::serialize(const _string& filename) const {
+void AbstractMap::serialize(const String& filename) const {
     switch(raw){
         case true:
             serializeraw(filename);
@@ -46,36 +48,6 @@ bool AbstractMap::isMonochrome() const {
     return g==2;
 }
 
-const _string& AbstractMap::getFilename() const{
+const String& AbstractMap::getFilename() const{
     return fn;
 }
-
-// void AbstractMap::restore(){
-//     copyf("~"+fn, fn);
-//     deserialize(fn);
-// }
-
-// void AbstractMap::copyf(const _string& srcname, const _string& destname) {
-//     std::ifstream src(srcname, std::ios::binary);
-//     if (!src.is_open()) {
-//         throw std::runtime_error("Error: unable to open source file in order to make backup");
-//     }
-
-//     std::ofstream dest(destname, std::ios::binary);
-//     if (!dest.is_open()) {
-//         throw std::runtime_error("Error: unable to open destination file in order to make backup");
-//     }
-
-//     dest << src.rdbuf();
-
-//     if(!src.good() || !dest.good()){
-//         throw std::runtime_error("Error: unable to make backup");
-//     }
-
-//     src.close();
-//     dest.close();
-// }
-
-// void updatebackup(){
-//     copyf(fn, "~"+fn);
-// }

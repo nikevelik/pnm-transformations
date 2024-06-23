@@ -1,8 +1,8 @@
 #pragma once
-#include "../assets/_string.h"
+#include "../assets/String.h"
 #include "../assets/Container.hpp"
-#include "../assets/_vector.hpp"
-#include "../assets/_pair.hpp"
+#include "../assets/Vector.hpp"
+#include "../assets/Pair.hpp"
 #include "Operation.h"
 #include "../PNM/AbstractMap.h"
 #include "../PNM/PNMFactory.h"
@@ -11,11 +11,11 @@ class Session{
     public:
         Session();
         void save() noexcept;
-        void saveas(const _string& filename) const noexcept;
+        void saveas(const String& filename) const noexcept;
         void info() const noexcept;
-        void add(const _string& filename) noexcept;
+        void add(const String& filename) noexcept;
         void undo() noexcept;
-        void collage(const _string& i1, const _string& i2, bool isVertical, const _string& out) noexcept;
+        void collage(const String& i1, const String& i2, bool isVertical, const String& out) noexcept;
         void operate(const Operation& op) noexcept;
         unsigned getID() const noexcept;
     private:
@@ -24,6 +24,6 @@ class Session{
         unsigned id = 0;
         static unsigned lastId;
         Container<AbstractMap, PNMFactory> img;
-        _vector<_pair<_string, unsigned>> files;
-        _vector<Operation> operations;
+        Vector<Pair<String, unsigned>> files;
+        Vector<Operation> operations;
 };
