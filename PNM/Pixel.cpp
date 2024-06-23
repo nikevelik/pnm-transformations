@@ -4,7 +4,9 @@
 #include <stdexcept>
 
 unsigned Pixel::MAX_ALLOWED = 255;
-
+const float RFACTOR = 0.5125;
+const float GFACTOR = 0.8154;
+const float BFACTOR = 0.3721;
 void Pixel::check(std::ifstream& ifs, int v){
     if(!ifs.good()){
         throw std::runtime_error("could not read pixel values from source.");
@@ -66,7 +68,7 @@ void Pixel::grayscale(){
 }
 void Pixel::monochrome(unsigned char maxvalue){
     if(!isMonochrome(maxvalue)){
-        r = b = g = ((((0.5125*r + 0.8154*g + 0.3721*b)) >= maxvalue/2) ? maxvalue : 0);
+        r = b = g = ((((RFACTOR*r + GFACTOR*g + BFACTOR*b)) >= maxvalue/2) ? maxvalue : 0);
     }
 }
 void Pixel::negative(unsigned char maxvalue){
