@@ -6,7 +6,7 @@
 template<class T>
 class _vector {
 private:
-	static const short INITIAL_CAPACITY = 4;
+	static const short INITIAL_CAPACITY = 1;
 	static const short RESIZE_COEF = 2; 
 
 	T* data = nullptr;
