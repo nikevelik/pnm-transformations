@@ -13,8 +13,6 @@ class Bitmap : public AbstractMap{
         void rotation90() override;
         void rotation180() override;
         void rotation270() override;
-        // AbstractMap* collagevertical() const override;
-        // AbstractMap* collagehorizontal() const override;
         AbstractMap* clone() const override;
 
         Bitmap(const String& filename);

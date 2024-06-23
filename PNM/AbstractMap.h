@@ -16,8 +16,6 @@ class AbstractMap{
         virtual void rotation90() = 0;
         virtual void rotation180() = 0;
         virtual void rotation270() = 0;
-        // virtual AbstractMap* collagevertical() const = 0;
-        // virtual AbstractMap* collagehorizontal() const = 0;
         virtual AbstractMap* clone() const = 0;
 
         void restore();

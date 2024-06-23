@@ -34,8 +34,6 @@ public:
     void grayscale();
     void monochrome();
     void negative();
-    // GraphicMatrix<T>& rowcat(const GraphicMatrix<T>& o);
-    // GraphicMatrix<T>& colcat(const GraphicMatrix<T>& o);
 
     const T* operator[](unsigned idx) const;
     T* operator[](unsigned idx);

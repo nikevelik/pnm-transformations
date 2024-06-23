@@ -3,30 +3,7 @@
 #include<iostream>
 #include<stdexcept>
 void Session::collage(const String& i1, const String& i2, bool isVertical, const String& out) noexcept{
-    AbstractMap* ptr1, *ptr2;
-    for(unsigned i = 0; i <files.getSize(); i++){
-        if(files[i].getFirst() == out){
-            std::cerr << "Choose a outfile for the collage that is not among the images in the session";
-            return;
-        }
-        if(files[i].getFirst() == i1){
-
-        }else if(files[i].getFirst() == i2){
-            
-        }
-    }
-    for(unsigned i = 0; i <img.getSize(); i++){
-        if(img[i]->getFilename() == out){
-            std::cerr << "Choose a outfile for the collage that is not among the images in the session";
-            return;
-        }
-        if(img[i]->getFilename() == i1){
-            ptr1 = img[i];
-        }
-        if(img[i]->getFilename() == i2){
-            ptr2 = img[i];
-        }
-    }
+    std::cerr << "Collages are not available.";
 }
 
 unsigned Session::getID() const noexcept{
