@@ -21,6 +21,8 @@ class Session{
         void operate(const Operation& op) noexcept;
         unsigned getID() const noexcept;
     private:
+        unsigned id = 0;
+        static unsigned lastid;
         static void calc(const Operation& op, int& r, Grayness& g, bool& n) noexcept;
         static void apply(AbstractMap* target, int r, Grayness g, bool n) noexcept;
         Container<AbstractMap, PNMFactory> img;

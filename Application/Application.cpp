@@ -26,18 +26,23 @@ void Application::load(const String& s){
     try{
         sess.pushBack(Session(s));
         curr = sess.getSize()-1;
-        std::cout << "Session with ID: " << curr << " started\n";
+        std::cout << "Session with ID: " << sess[curr].getID() << " started\n";
     }catch(std::exception& e){
         std::cerr << "Did not start session due: " << e.what();
     }
 }
 
 void Application::change(int id){
-    if(id >= sess.getSize() || id <0){
-        std::cerr << "not valid session id\n";
-        return;        
+
+    for(int i = 0; i < sess.getSize(); i++){
+        if(sess[i].getID() == id){
+            std::cout << "switching to session " << id << "\n";
+            curr = i;
+            return;
+        }
     }
-    std::cout << "changing session to " << (curr = id) << "\n"; 
+    std::cerr << "not valid session id\n";
+    return;        
 }
 
 void Application::add(const String& s){

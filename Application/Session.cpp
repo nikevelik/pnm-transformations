@@ -2,6 +2,12 @@
 #include"Session.h"
 #include<iostream>
 #include<stdexcept>
+unsigned Session::lastid = 1;
+
+unsigned Session::getID() const noexcept {
+    return id;
+}
+
 void Session::collage(const String& i1, const String& i2, bool isVertical, const String& out) noexcept{
     std::cerr << "Collages are not available.\n";
 }
@@ -65,6 +71,7 @@ void Session::info() const noexcept{
 }
 
 Session::Session(const String& filename){
+    id = lastid++;
     if(isValidFileType(filename)){
         files.pushBack(Pair<String, unsigned>(filename, operations.getSize()));
         std::cout << "Image \"" << filename <<"\" added\n";

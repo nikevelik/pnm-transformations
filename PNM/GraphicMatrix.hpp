@@ -283,6 +283,7 @@ void GraphicMatrix<T>::serializeplain(const String& filename) const{
         for (unsigned x = 0; x < w; x++) {
             outfile << data[y][x];
         }
+        outfile << "\n";
     }
 }
 template<class T>
